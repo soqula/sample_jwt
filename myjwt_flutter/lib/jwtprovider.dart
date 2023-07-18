@@ -31,6 +31,32 @@ class JwtProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  double getMaxWeight() {
+    if (weightList.isEmpty) {
+      return 0;
+    }
+    double value = 0.0;
+    _weightList.forEach((element) {
+      if (value < element.weight) {
+        value = element.weight;
+      }
+    });
+    return value;
+  }
+
+  double getMinWeight() {
+    if (weightList.isEmpty) {
+      return 0;
+    }
+    double value = 200.0;
+    _weightList.forEach((element) {
+      if (value > element.weight) {
+        value = element.weight;
+      }
+    });
+    return value;
+  }
+
   void clear() {
     email = '';
     password = '';
@@ -75,26 +101,8 @@ class JwtProvider with ChangeNotifier {
       ];
       id = responseJwt2.data['id'];
       await cookieJar.saveFromResponse(_uriHost, cookieList);
-
-      final response = await dio.get(
-        '/api/myjwt/myjwt/',
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer ${cookieList.first.value}',
-          },
-        ),
-      );
-      if (response.statusCode == 200) {
-        _weightList = List.generate(response.data.length, (index) {
-          return HistoryWeight(
-            id: response.data[index]['id'],
-            userid: response.data[index]['user'],
-            saved_at: DateTime.parse(response.data[index]['saved_at']),
-            weight: response.data[index]['weight'],
-          );
-        });
-      }
-
+      // 一覧取得
+      await getlist();
       _isSuccess = true;
     } catch (error) {
       message = '正しいEメールとパスワードを入力してください';
