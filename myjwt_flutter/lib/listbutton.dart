@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import './models.dart';
+import './alertdialog.dart';
+import './jwtprovider.dart';
 
 class WeightListButton extends StatelessWidget {
   const WeightListButton({Key? key, required this.index, required this.weight})
@@ -12,37 +15,39 @@ class WeightListButton extends StatelessWidget {
     double tmpcolor =
         Theme.of(context).colorScheme.inversePrimary.computeLuminance();
     Color color = tmpcolor > 0.5 ? Colors.black : Colors.white;
-    return ListTile(
-      title: Text(
-        DateFormat('yyyy-MM-dd').format(weight.saved_at).toString(),
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(color: color),
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      subtitle: Text(
-        "体重：${weight.weight}kg",
-        style: TextStyle(color: color),
-      ),
-      leading: Icon(
-        Icons.account_circle,
-        color: color,
-      ),
-      tileColor: Colors.blue[100],
-      onTap: () => {
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (BuildContext context) => StockDetail(port: port),
-        //   ),
-        // ),
+    return Consumer<JwtProvider>(
+      builder: (context, jwtProvider, _) {
+        return ListTile(
+          title: Text(
+            DateFormat('yyyy-MM-dd').format(weight.saved_at).toString(),
+            style: TextStyle(color: color),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          subtitle: Text(
+            "体重：${weight.weight}kg",
+            style: TextStyle(color: color),
+          ),
+          leading: Icon(
+            Icons.account_circle,
+            color: color,
+          ),
+          tileColor: Colors.blue[100],
+          onTap: () async {
+            final result = await showDialog<int>(
+                context: context,
+                builder: (_) {
+                  return AlearDialogButton();
+                });
+            print("選択は、${result}");
+            if (result == 1) {
+              await jwtProvider.delete(weight.id);
+            }
+          },
+          dense: true,
+        );
       },
-      // onLongPress: () => {},
-      // trailing: Icon(
-      //   Icons.more_vert,
-      //   color: color,
-      // ),
-      dense: true,
     );
   }
 }
