@@ -8,7 +8,7 @@ import './models.dart';
 import 'package:intl/intl.dart';
 
 class DioAccess {
-  final Uri _uriHost = Uri.parse('http://10.0.2.2:8000');
+  Uri _uriHost = Uri.parse('http://10.0.2.2:8000');
   bool _isSuccess = false;
   String message = '';
   String email = '';
@@ -17,6 +17,7 @@ class DioAccess {
   List<HistoryWeight> _weightList = [];
   List<HistoryWeight> get weightList => _weightList;
   bool get isSuccess => _isSuccess;
+  set uriHost(path) => _uriHost = path;
 
   DioAccess();
 

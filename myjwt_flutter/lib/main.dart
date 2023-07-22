@@ -4,8 +4,12 @@ import './menu.dart';
 import './login.dart';
 import './jwtprovider.dart';
 import './list.dart';
+import 'package:path/path.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // runApp前にFlutter Engineを使う場合
+  await dotenv.load(fileName: join("assets", '.env'));
   runApp(
     MultiProvider(
       providers: [

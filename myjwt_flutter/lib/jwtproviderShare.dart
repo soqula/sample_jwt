@@ -2,9 +2,12 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import './models.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ShareAccess {
-  final Uri _uriHost = Uri.parse('http://127.0.0.1:8000');
+  // Uri _uriHost = Uri.parse('http://127.0.0.1:8000');
+  Uri _uriHost =
+      Uri.parse(dotenv.get("WEB_API", fallback: 'http://127.0.0.1:8000'));
   bool _isSuccess = false;
   String message = '';
   String email = '';
@@ -13,6 +16,7 @@ class ShareAccess {
   List<HistoryWeight> _weightList = [];
   List<HistoryWeight> get weightList => _weightList;
   bool get isSuccess => _isSuccess;
+  set uriHost(path) => _uriHost = path;
 
   ShareAccess();
 
@@ -20,6 +24,7 @@ class ShareAccess {
     email = '';
     password = '';
     message = '';
+    print(dotenv.env["WEB_API"]);
   }
 
   Future<void> saveToken(String mode) async {
