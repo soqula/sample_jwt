@@ -69,8 +69,25 @@ class JwtProvider with ChangeNotifier {
     message = '';
     if (kIsWeb) {
       _isSuccess = await shareaccess.auth(email, password);
+      message = shareaccess.message;
     } else {
       _isSuccess = await dioaccess.auth(email, password);
+      message = dioaccess.message;
+    }
+
+    notifyListeners();
+    return _isSuccess;
+  }
+
+  Future<bool> signup() async {
+    _isSuccess = false;
+    message = '';
+    if (kIsWeb) {
+      _isSuccess = await shareaccess.signup(email, password);
+      message = shareaccess.message;
+    } else {
+      _isSuccess = await dioaccess.signup(email, password);
+      message = dioaccess.message;
     }
 
     notifyListeners();
@@ -81,9 +98,11 @@ class JwtProvider with ChangeNotifier {
     if (kIsWeb) {
       await shareaccess.addWeight(saved_at, weigth);
       _isSuccess = shareaccess.isSuccess;
+      message = shareaccess.message;
     } else {
       await dioaccess.addWeight(saved_at, weigth);
       _isSuccess = dioaccess.isSuccess;
+      message = dioaccess.message;
     }
 
     notifyListeners();
@@ -104,9 +123,11 @@ class JwtProvider with ChangeNotifier {
     if (kIsWeb) {
       await shareaccess.getlist();
       _isSuccess = shareaccess.isSuccess;
+      message = shareaccess.message;
     } else {
       await dioaccess.getlist();
       _isSuccess = dioaccess.isSuccess;
+      message = dioaccess.message;
     }
 
     return _isSuccess;
@@ -116,9 +137,11 @@ class JwtProvider with ChangeNotifier {
     if (kIsWeb) {
       await shareaccess.delete(id);
       _isSuccess = shareaccess.isSuccess;
+      message = shareaccess.message;
     } else {
       await dioaccess.delete(id);
       _isSuccess = dioaccess.isSuccess;
+      message = dioaccess.message;
     }
 
     notifyListeners();

@@ -26,6 +26,12 @@ class MenuScreen extends StatelessWidget {
               Navigator.pushNamed(context, '/login');
             },
           ),
+          TextButton(
+            child: const Text('ユーザ登録'),
+            onPressed: () {
+              Navigator.pushNamed(context, '/signup');
+            },
+          ),
         ],
       )),
     );

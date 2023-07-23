@@ -79,6 +79,39 @@ class ShareAccess {
     return _isSuccess;
   }
 
+  Future<bool> signup(String email, String password) async {
+    try {
+      Dio dio = Dio();
+      dio.options.baseUrl = _uriHost.toString();
+      dio.options.connectTimeout = const Duration(seconds: 30);
+      dio.options.receiveTimeout = const Duration(seconds: 30);
+      dio.options.contentType = 'application/json';
+
+      final responseJwt = await dio.post('/api/create/', data: {
+        'email': email,
+        'password': password,
+      });
+      // // idについても取得する
+      // final responseJwt2 = await dio.get('/api/myjwt/getid/',
+      //     options: Options(
+      //       headers: {
+      //         'Authorization': 'Bearer ${responseJwt.data['access']}',
+      //       },
+      //     ));
+      // await saveToken(responseJwt.data['access']);
+      // await saveId(responseJwt2.data['id'].toString());
+      // // 一覧取得
+      // await getlist();
+      message = '登録しました。ログインしてください';
+      _isSuccess = true;
+    } catch (error) {
+      message = '登録に失敗しました。';
+      print(error);
+      _isSuccess = false;
+    }
+    return _isSuccess;
+  }
+
   Future<void> addWeight(DateTime saved_at, double weigth) async {
     try {
       Dio dio = Dio();

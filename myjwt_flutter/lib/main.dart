@@ -4,6 +4,7 @@ import './menu.dart';
 import './login.dart';
 import './jwtprovider.dart';
 import './list.dart';
+import './signup.dart';
 import 'package:path/path.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/menu': (BuildContext context) => const MenuScreen(),
         '/login': (BuildContext context) => const LoginScreen(),
         '/list': (BuildContext context) => const ListScreen(),
+        '/signup': (BuildContext context) => const SignupScreen(),
       },
     );
   }
